@@ -25,3 +25,8 @@ class UserDetailSerializer(serializers.ModelSerializer):
             "last_name",
 
         )
+
+
+class ActivationSerializer(serializers.Serializer):
+    # user_id = serializers.CharField()
+    code = serializers.CharField(min_length=6, max_length=6)
