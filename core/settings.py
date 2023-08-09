@@ -1,4 +1,5 @@
 from pathlib import Path
+import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -30,6 +31,9 @@ INSTALLED_APPS = [
     "users.apps.UsersConfig",
     "goods.apps.GoodsConfig",
     "orders.apps.OrdersConfig",
+    "locations.apps.LocationsConfig",
+    "shops.apps.ShopsConfig",
+    "employees.apps.EmployeesConfig",
 
 ]
 
@@ -117,5 +121,34 @@ REST_FRAMEWORK = {
     "DEFAULT_AUTHENTICATION_CLASSES": (
         "rest_framework.authentication.TokenAuthentication",
         "rest_framework.authentication.SessionAuthentication",
+
     ),
 }
+
+
+CACHES = {
+    'default': {
+        'BACKEND': 'django_redis.cache.RedisCache',
+        'LOCATION': "redis://localhost:6379",
+        'OPTIONS': {
+            'CLIENT_CLASS': 'django_redis.client.DefaultClient',
+        }
+    }
+}
+
+
+CELERY_BROKER_URL = "redis://localhost:6379"
+CELERY_RESULT_BACKEND = "redis://localhost:6379"
+
+# Email backend
+EMAIL_HOST = "smtp.gmail.com"
+EMAIL_FROM = "suslanchikmopl@gmail.com"
+EMAIL_HOST_USER = "suslanchikmopl@gmail.com"
+EMAIL_HOST_PASSWORD = "pbkkmgkdrkhpyimz"
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+
+try:
+    PASSWORD_RESET_TIMEOUT = int(os.getenv("PASSWORD_RESET_TIMEOUT"), 14400)        # type: ignore
+except ValueError:
+    PASSWORD_RESET_TIMEOUT = 14400

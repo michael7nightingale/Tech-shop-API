@@ -19,6 +19,7 @@ class UserManager(UserManager):
             password=password,
             first_name=first_name,
             last_name=last_name,
+            is_active=False
         )
         user.password = make_password(password)
         user.save(using=self._db)
@@ -45,12 +46,9 @@ class UserManager(UserManager):
 
     # def get(self, *args, **kwargs):
     #     try:
-    #         return (
-    #             super()
-    #             .get(*args, **kwargs)
-    #         )
+    #         return super().get(*args, **kwargs)
     #     except self.model.DoesNotExist:
-    #         raise NotFound("Account is not found.")
+    #         raise NotFound
 
     def are_you_blocked(self, you, other) -> bool:
         return other.black_list.filter(id=you.id).exists()

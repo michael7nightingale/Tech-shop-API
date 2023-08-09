@@ -57,8 +57,10 @@ class ActivationAPIView(generics.CreateAPIView):
         data = cache.get(code)
         time_now = datetime.datetime.now()
         if time_now >= data['exp']:
+            cache.delete(code)
             return Response({"detail": "Code is expired."}, status=400)
         user = User.objects.create_user(**data['user'])
         user.is_active = True
         user.save()
+        cache.delete(code)
         return Response({"detail": "User is created successfully."})
