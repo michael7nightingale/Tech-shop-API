@@ -1,11 +1,9 @@
 import datetime
-
-from django.forms import model_to_dict
 from django.template.loader import render_to_string
 from django.core.cache import cache
 import random
 
-from ..tasks.email import send_activation_code_email_task
+from ..tasks import send_activation_code_email_task
 
 
 def generate_code() -> str:
