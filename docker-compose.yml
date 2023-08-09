@@ -1,0 +1,25 @@
+version: "5"
+
+
+services:
+  django-app:
+    build:
+      context: .
+    ports:
+      - "8000:8000"
+    command: >
+      sh -c "python manage.py makemigrations &&
+             python manage.py migrate &&
+             python manage.py runserver 0.0.0.0:8000"
+
+  redis:
+    image: redis:5
+
+  celery:
+    restart: always
+    build:
+      context: .
+    command: celery -A core worker -l info
+    depends_on:
+    - redis
+    - django-app
