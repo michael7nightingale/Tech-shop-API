@@ -38,7 +38,8 @@ class UserManager(UserManager):
             password=password,
             first_name=first_name,
             last_name=last_name,
-            is_superuser=True
+            is_superuser=True,
+            is_staff=True,
         )
         user.password = make_password(password)
         user.save(using=self._db)
